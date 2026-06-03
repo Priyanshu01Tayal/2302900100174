@@ -1,4 +1,18 @@
 import React, { useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+
+import {
+  Button,
+  Typography
+} from "@mui/material";
+
+import AllNotifications from "./AllNotifications";
+import PriorityNotifications from "./PriorityNotifications";
 
 function App() {
   const [notifications, setNotifications] = useState([
@@ -19,46 +33,18 @@ function App() {
     {
       ID: "3",
       Type: "Result",
-      Message: "Mid Sem Result",
+      Message: "Mid Sem Result Published",
       Timestamp: "2026-06-03",
       read: false
     },
     {
       ID: "4",
       Type: "Event",
-      Message: "Tech Fest 2026",
+      Message: "Tech Fest Registration Open",
       Timestamp: "2026-06-01",
       read: false
     }
   ]);
-
-  const [filter, setFilter] = useState("All");
-  const [showPriority, setShowPriority] = useState(false);
-
-  const priorityOrder = {
-    Placement: 3,
-    Result: 2,
-    Event: 1
-  };
-
-  const filtered =
-    filter === "All"
-      ? notifications
-      : notifications.filter(
-          (item) => item.Type === filter
-        );
-
-  const priorityNotifications = [...notifications]
-    .sort(
-      (a, b) =>
-        priorityOrder[b.Type] -
-        priorityOrder[a.Type]
-    )
-    .slice(0, 10);
-
-  const displayData = showPriority
-    ? priorityNotifications
-    : filtered;
 
   const markRead = (id) => {
     setNotifications(
@@ -71,70 +57,82 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Notification Dashboard</h1>
-
-      <select
-        value={filter}
-        onChange={(e) =>
-          setFilter(e.target.value)
-        }
+    <BrowserRouter>
+      <div
+        style={{
+          padding: "20px",
+          background: "#f4f6f9",
+          minHeight: "100vh"
+        }}
       >
-        <option>All</option>
-        <option>Placement</option>
-        <option>Result</option>
-        <option>Event</option>
-      </select>
-
-      <br />
-      <br />
-
-      <button
-        onClick={() =>
-          setShowPriority(!showPriority)
-        }
-      >
-        {showPriority
-          ? "All Notifications"
-          : "Priority Notifications"}
-      </button>
-
-      <br />
-      <br />
-
-      {displayData.map((item) => (
-        <div
-          key={item.ID}
-          style={{
-            border: "1px solid black",
-            padding: "10px",
-            marginBottom: "10px",
-            borderRadius: "5px"
+        <Typography
+          variant="h3"
+          align="center"
+          sx={{
+            color: "#1e3a8a",
+            fontWeight: "bold",
+            mb: 4
           }}
         >
-          <h3>{item.Type}</h3>
+          Notification Dashboard
+        </Typography>
 
-          <p>{item.Message}</p>
-
-          <p>{item.Timestamp}</p>
-
-          <p>
-            Status:
-            {item.read
-              ? " Read"
-              : " Unread"}
-          </p>
-
-          <button
-            onClick={() =>
-              markRead(item.ID)
-            }
+        <div
+          style={{
+            display: "flex",
+            gap: "15px",
+            justifyContent: "center",
+            marginBottom: "25px"
+          }}
+        >
+          <Link
+            to="/"
+            style={{ textDecoration: "none" }}
           >
-            Mark Read
-          </button>
+            <Button
+              variant="contained"
+              color="primary"
+            >
+              All Notifications
+            </Button>
+          </Link>
+
+          <Link
+            to="/priority"
+            style={{ textDecoration: "none" }}
+          >
+            <Button
+              variant="contained"
+              color="success"
+            >
+              Priority Notifications
+            </Button>
+          </Link>
         </div>
-      ))}
-    </div>
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <AllNotifications
+                notifications={notifications}
+                markRead={markRead}
+              />
+            }
+          />
+
+          <Route
+            path="/priority"
+            element={
+              <PriorityNotifications
+                notifications={notifications}
+                markRead={markRead}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
