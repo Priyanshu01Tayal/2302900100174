@@ -151,19 +151,20 @@ Composite Index:
 
 ### Performance Optimization
 
-* Redis Cache
-* Pagination
-* Lazy Loading
-* Read Replicas
+## Stage 4
+Performance:
+- Redis Cache
+- Pagination
+- Read Replicas
+- Lazy Loading
 
 ---
 
+
 ## Stage 5
-
-### Queue System
-
-* RabbitMQ
-* Kafka
+Queue System:
+- RabbitMQ
+- Kafka
 
 Purpose:
 
