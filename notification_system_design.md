@@ -175,16 +175,47 @@ Purpose:
 ---
 
 ## Stage 6
+## Stage 6
 
-### Priority Logic
+### Priority Notification System
 
-Placement > Result > Event
+Priority is calculated using notification type and recency.
 
 Weights:
 
 * Placement = 3
 * Result = 2
 * Event = 1
+
+### Algorithm
+
+1. Fetch notifications from Notification API.
+2. Assign weight based on notification type.
+3. Sort notifications by:
+
+   * Priority Weight (Descending)
+   * Timestamp (Descending)
+4. Select Top 10 notifications.
+
+### Example
+
+Placement notifications are displayed before Result notifications.
+
+Result notifications are displayed before Event notifications.
+
+### Handling New Notifications
+
+The system fetches fresh notifications whenever the dashboard loads.
+
+Priority list is recalculated after every fetch to ensure newly arrived notifications are included.
+
+### Advantages
+
+* Simple implementation
+* Fast execution
+* Real-time updates
+* Easy scalability
+
 
 ### Priority Formula
 
